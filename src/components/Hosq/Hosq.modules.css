@@ -1,0 +1,56 @@
+.hosq_upload_div{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: var(--as-primary-dim);
+    border-radius: 1rem;
+    border-style: none;
+    width: 100%;
+}
+
+.div_space_between{
+    margin: 0.2rem 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.border1rem{
+    border-radius: 1rem;
+    border-style: none;
+    padding: 0.2rem;
+}
+
+.div_flex_column{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.text_center{
+    text-align: center;
+}
+
+.fill_width{
+    width: -webkit-fill-available
+}
+
+.container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-width: 2px;
+    border-radius: 1rem;
+    border-color: var(--as-primary);
+    border-style: dashed;
+    background-color: var(--as-light);
+    color: var(--as-dark);
+    outline: none;
+    transition: border .24s ease-in-out;
+    width: -webkit-fill-available;
+}

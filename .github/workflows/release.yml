@@ -1,0 +1,37 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v1
+      
+      - name: Setup Node 
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.5.0
+          registry-url: https://registry.npmjs.org/
+
+      - name: build 
+        run: npm i && npm run rollup
+
+      - name: update version
+        run: node update_pkg_version.js 0.1.${{ github.run_number }}
+         
+      - name: Upload release
+        run: npm publish --access public
+        env:
+          CI: true
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
