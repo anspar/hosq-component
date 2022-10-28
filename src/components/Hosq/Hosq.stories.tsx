@@ -2,7 +2,6 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-// import { Wallet, WalletContext } from './Wallet';
 import { HosqUploadFiles, HosqProvider } from './Hosq';
 
 import { ThemeSwitch } from '@anspar/anspar-theme';
@@ -10,7 +9,7 @@ import { ThemeSwitch } from '@anspar/anspar-theme';
 import { WalletContext, Wallet } from '@anspar/rainbowkit-anspar';
 
 export default {
-  title: 'ANS/WalletContext/Hosq',
+  title: 'WalletContext/Hosq',
   component: HosqUploadFiles,
 } as ComponentMeta<typeof HosqUploadFiles>;
 

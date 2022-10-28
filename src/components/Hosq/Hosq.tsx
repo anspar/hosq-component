@@ -1,6 +1,6 @@
 import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 import Dropzone from 'react-dropzone'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { useNetwork } from 'wagmi'
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/progress'
 import axios, { CancelToken } from 'axios'
@@ -58,9 +58,13 @@ function PinButton (props: { blocks: number, cid: string, chainId: number, symbo
   const { isError, error, isLoading, write, fees } = useHosqPin(props.cid, props.blocks, selectedProviderId, props.chainId)
   const fee = (fees.data != null) ? fees.data[0].add(fees.data[1]).toString() : '0'
   // console.log(data, isError, isLoading, ethers.utils.formatEther(fee));
-  const feeErr = () => { console.error(fees.error); toast.error('Error getting the provider fee') }
+  const feeErr = () => { console.error(fees.error); 
+    // toast.error('Error getting the provider fee')
+   }
   fees.isError && feeErr()
-  const pinErr = () => { console.error(error); toast.error('Error submitting pinning request') }
+  const pinErr = () => { console.error(error); 
+    //toast.error('Error submitting pinning request') 
+  }
   isError && pinErr()
   return (
     <div className={hosqStyles.div_flex_column}>
@@ -126,10 +130,10 @@ export function useHosqUpload (data: HosqUploadProps) {
     // console.log(data.files);
     setResponse(undefined)
     setError(undefined)
-    if (url === undefined) {
-      toast.error('Failed to upload, Hosq provider is not available')
-      return
-    }
+    // if (url === undefined) {
+    //   toast.error('Failed to upload, Hosq provider is not available')
+    //   return
+    // }
     axios({
       method: 'post',
       baseURL: url,
@@ -155,7 +159,7 @@ export function useHosqUpload (data: HosqUploadProps) {
         setResponse(res.data)
       } else {
         setError(res)
-        toast.error('Failed to upload')
+        // toast.error('Failed to upload')
       }
     }).catch((e) => {
       setError(e)
@@ -237,7 +241,7 @@ export function useGet (cid: string, json: boolean = false) {
       if (res.status !== 200) {
         console.error(res)
         setError(res.status)
-        toast.error(`Failed to request data from '${selectedProvider.name}' provider`)
+        // toast.error(`Failed to request data from '${selectedProvider.name}' provider`)
         return
       }
       setData(json ? (await res.json()) : res)
@@ -262,7 +266,7 @@ export function HosqProvider ({ children, ...props }: HosqProviderProps) {
   ])
   const [ready, setReady] = useState(false)
   useEffect(() => {
-    isError && toast.error('Failed to get Hosq provider')
+    // isError && toast.error('Failed to get Hosq provider')
     if (data != null) {
       selectedProvider = data
       selectedProviderId = props.DefaultProviderId ? props.DefaultProviderId : 1
@@ -273,6 +277,6 @@ export function HosqProvider ({ children, ...props }: HosqProviderProps) {
   }, [data])
 
   return (
-    ready ? <>{children}</> : <></>
+    ready ? <>{children}</> : <>Hosq is not available on this chain</>
   )
 }
