@@ -54,3 +54,30 @@
     transition: border .24s ease-in-out;
     width: -webkit-fill-available;
 }
+
+.picker{
+    padding: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 240px;
+}
+
+.picker>div{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.picker>div>input{
+    width: 100%;
+    max-width: 160px;
+    background-color: var(--as-primary);
+    color: var(--as-dark);
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    border-style: none;
+    text-align: center;
+    outline-width: 0;
+}

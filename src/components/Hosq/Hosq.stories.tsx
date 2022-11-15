@@ -2,7 +2,7 @@ import React from 'react';
 
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import { HosqUploadFiles, HosqProvider } from './Hosq';
+import { HosqUploadFiles, HosqPicker } from './Hosq';
 
 import { ThemeSwitch } from '@anspar/anspar-theme';
 
@@ -19,10 +19,9 @@ const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
       <ThemeSwitch style={{ width: "30px" }} />
       <WalletContext testnets>
         <Wallet />
+        <HosqPicker />
         <div style={{ marginTop: "0.5rem", backgroundColor: "var(--as-light)", padding: "1rem" }}>
-          <HosqProvider>
             <HosqUploadFiles {...args} />
-          </HosqProvider>
         </div>
       </WalletContext>
     </>
@@ -53,21 +52,17 @@ const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
           symbol: 'AT',
         },
         rpcUrls: {
-          default: 'https://net.anspar.io'
+          default: 'http://server:8545'
         }
       }]
       }>
         <Wallet />
-        <div style={{ marginTop: "0.5rem", backgroundColor: "var(--as-light)", padding: "1rem" }}>
-          <HosqProvider>
+        <div style={{ margin: "0.5rem 0", backgroundColor: "var(--as-light)", padding: "1rem" }}>
             <HosqUploadFiles {...args} />
-          </HosqProvider>
         </div>
+        <HosqPicker />
       </WalletContext>
     </>
   )
 }
 export const UploadFilesCustomChain = Template2.bind({});
-UploadFilesCustomChain.args = {
-
-}
