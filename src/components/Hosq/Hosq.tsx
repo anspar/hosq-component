@@ -127,7 +127,7 @@ export function useHosqUpload(data: HosqUploadProps) {
   }
   const upload = useCallback((cancelToken: CancelToken) => {
     const body = new FormData()
-    data.files !== undefined && data.files?.map((f) => body.append('file', f, `${f.webkitRelativePath}`))
+    data.files !== undefined && data.files?.map((f, i) => body.append(`file`, f, `${f.webkitRelativePath || f.name}`))
     data.blobs !== undefined && data.blobs?.map((b, i) => body.append(`file`, b.blob, b.name))
     // console.log(data.files);
     setResponse(undefined)
@@ -136,8 +136,12 @@ export function useHosqUpload(data: HosqUploadProps) {
     //   toast.error('Failed to upload, Hosq provider is not available')
     //   return
     // }
+    // body.forEach((v) => { console.dir(v) })
     axios({
-      method: 'post',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
       baseURL: url,
       url: data.wrapInDir ? '/v0/file/upload?dir=true' : '/v0/file/upload?dir=false',
       onUploadProgress: (e) => {
@@ -193,7 +197,7 @@ export function HosqUploadFiles(props: HosqUploadFilesProps) {
     return () => {
       props.uploadOnDrop && source.cancel()
     }
-  }, [files])
+  }, [files, props.uploadOnDrop])
   return (
     <div className={hosqStyles.hosq_upload_div}>
       {
@@ -286,8 +290,8 @@ export function HosqPicker(props: HosqProviderProps) {
       <div className={`${hosqStyles.picker} ${isLoading && 'as-loading'}`}>
         {/* <span>Hosq Provider Picker</span> */}
         <div>
-          <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} className={`${isError && 'as-bg-danger'}`}/>
-          <span className='as-btn-primary as-btn' onClick={()=>{setPID(hosqIdInput.current?.valueAsNumber)}}>Select</span>
+          <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} className={`${isError && 'as-bg-danger'}`} />
+          <span className='as-btn-primary as-btn' onClick={() => { setPID(hosqIdInput.current?.valueAsNumber) }}>Select</span>
         </div>
         <span>{data?.name}</span>
         <span>{data?.api_url}</span>

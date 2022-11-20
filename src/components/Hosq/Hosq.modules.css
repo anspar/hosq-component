@@ -73,11 +73,15 @@
 .picker>div>input{
     width: 100%;
     max-width: 160px;
-    background-color: var(--as-primary);
+    background-color: var(--as-primary-dim);
     color: var(--as-dark);
     padding: 0.5rem;
     border-radius: 0.3rem;
     border-style: none;
     text-align: center;
     outline-width: 0;
+}
+
+.picker>div>input::placeholder {
+    color: white;
 }
