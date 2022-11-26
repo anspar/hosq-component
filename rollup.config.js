@@ -6,16 +6,13 @@ import json from '@rollup/plugin-json';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import typescript from "@rollup/plugin-typescript";
 import image from 'rollup-plugin-img';
-// import copy from 'rollup-plugin-copy';
-
-const packageJson = require("./package.json");
 
 export default [
   {
     input: "src/index.ts",
     output: [
       {
-        file: packageJson.main,
+        file: 'dist/index.mjs',
         format: "esm",
         sourcemap: true,
       },

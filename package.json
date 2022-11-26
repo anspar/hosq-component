@@ -76,12 +76,12 @@
     "react-responsive": "^9.0.0-beta.10",
     "wagmi": "^0.5.11"
   },
-  "main": "dist/index.mjs",
   "files": [
     "dist"
   ],
   "exports": {
     ".": "./dist/index.mjs"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "type": "module"
 }
