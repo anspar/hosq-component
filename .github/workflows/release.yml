@@ -28,7 +28,7 @@ jobs:
         run: npm i && npm run rollup
 
       - name: update version
-        run: node update_pkg_version.js 0.1.${{ github.run_number }}
+        run: node update_pkg_version.cjs 0.1.${{ github.run_number }}
          
       - name: Upload release
         run: npm publish --access public
