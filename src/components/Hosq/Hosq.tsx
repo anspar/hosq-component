@@ -128,20 +128,13 @@ export function useHosqUpload(data: HosqUploadProps) {
   const upload = useCallback((cancelToken: CancelToken) => {
     const body = new FormData()
     data.files !== undefined && data.files?.map((f, i) => body.append(`file`, f, `${f.webkitRelativePath || f.name}`))
-    data.blobs !== undefined && data.blobs?.map((b, i) => body.append(`file`, b.blob, b.name))
-    // console.log(data.files);
+    data.blobs !== undefined && data.blobs?.map((b, i) => body.append(`blob`, b.blob, b.name))
+
     setResponse(undefined)
     setError(undefined)
-    // if (url === undefined) {
-    //   toast.error('Failed to upload, Hosq provider is not available')
-    //   return
-    // }
-    // body.forEach((v) => { console.dir(v) })
+
     axios({
       method: 'POST',
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
       baseURL: url,
       url: data.wrapInDir ? '/v0/file/upload?dir=true' : '/v0/file/upload?dir=false',
       onUploadProgress: (e) => {
@@ -165,7 +158,6 @@ export function useHosqUpload(data: HosqUploadProps) {
         setResponse(res.data)
       } else {
         setError(res)
-        // toast.error('Failed to upload')
       }
     }).catch((e) => {
       setError(e)
