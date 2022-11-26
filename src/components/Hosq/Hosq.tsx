@@ -1,4 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+/* eslint-disable no-sequences */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable no-return-assign */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import React, { DetailedHTMLProps, InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react'
 import Dropzone from 'react-dropzone'
 // import { toast } from 'react-toastify'
 import { useNetwork } from 'wagmi'
@@ -20,7 +26,7 @@ export interface HosqPickerProps {
 
 export interface HosqUploadProps {
   files?: File[]
-  blobs?: { blob: Blob, name: string }[]
+  blobs?: Array<{ blob: Blob, name: string }>
   wrapInDir?: boolean
 }
 
@@ -36,7 +42,7 @@ export interface HosqUploadFilesProps {
 let selectedProvider: any | undefined
 let selectedProviderId: number = 1
 
-function FileUploadComponent({ callback, ...props }: any) {
+function FileUploadComponent ({ callback, ...props }: any) {
   return (
     <Dropzone preventDropOnDocument
       onDropAccepted={acceptedFiles => callback(acceptedFiles)}
@@ -46,7 +52,7 @@ function FileUploadComponent({ callback, ...props }: any) {
           <input {...getInputProps()} />
           {isDragAccept
             ? <p>Drop</p>
-            : <p>Drag 'n' drop {props.maxFiles === 1 ? 'a file' : 'some files'} here, or click to select</p>
+            : <p>Drag & drop {props.maxFiles === 1 ? 'a file' : 'some files'} here, or click to select</p>
           }
         </div>
       )}
@@ -54,43 +60,46 @@ function FileUploadComponent({ callback, ...props }: any) {
   )
 }
 
-function PinButton(props: { blocks: number, cid: string, chainId: number, symbol?: string }) {
+function PinButton (props: { blocks: number, cid: string, chainId: number, symbol?: string }) {
   const { isError, error, isLoading, write, fees } = useHosqPin(props.cid, props.blocks, selectedProviderId, props.chainId)
   const fee = (fees.data != null) ? fees.data[0].add(fees.data[1]).toString() : '0'
   // console.log(data, isError, isLoading, ethers.utils.formatEther(fee));
   const feeErr = () => {
-    console.error(fees.error);
+    console.error(fees.error)
     // toast.error('Error getting the provider fee')
   }
   fees.isError && feeErr()
   const pinErr = () => {
-    console.error(error);
-    //toast.error('Error submitting pinning request') 
+    console.error(error)
   }
   isError && pinErr()
   return (
     <div className={hosqStyles.div_flex_column}>
       <span className={`as-text-size-xs as-text-bold ${fees.isLoading ? 'as-loading' : ''}`}>
-        Fee {props.symbol || '?'} {ethers.utils.formatEther(fee)}
+        Fee {props.symbol ?? '?'} {ethers.utils.formatEther(fee)}
       </span>
       <span className={[`as-btn-primary as-pointer as-shadow-sm ${hosqStyles.text_center} ${isLoading ? 'as-loading' : ''}`,
-      hosqStyles.border1rem, hosqStyles.fill_width].join(' ')}
+        hosqStyles.border1rem, hosqStyles.fill_width].join(' ')}
         onClick={() => write()} style={{ minWidth: '102px' }}>Pin CID</span>
     </div>
   )
 }
 
-function HosqPin(props: { cid: string }) {
+function HosqPin (props: { cid: string }) {
   // const [blocks, setBlocks] = useState(1);
   const dateInput = useRef<any>()
   const [date, setDate] = useState(new Date(new Date().getTime() + (7 * 86400 * 1000)))
   const { chain } = useNetwork()
-  const blocks = Math.round(((date.getTime() - new Date().getTime()) / 1000) / blockTimes[chain?.id as number])
+  const [blocks, setBlocks] = useState(0)
   // console.log(blocks);
   useEffect(() => {
     dateInput.current.value = date.toISOString().substring(0, 10)
     dateInput.current.min = new Date().toISOString().substring(0, 10)
   }, [])
+
+  useEffect(() => {
+    setBlocks(Math.round(((date.getTime() - new Date().getTime()) / 1000) / blockTimes[chain?.id as number]))
+  }, [date])
   return (
     <div className={[hosqStyles.div_space_between, hosqStyles.fill_width].join(' ')}>
       <div className={hosqStyles.div_flex_column}>
@@ -100,12 +109,14 @@ function HosqPin(props: { cid: string }) {
         <input className={[hosqStyles.border1rem, 'as-text-dark as-bg-light as-shadow-sm'].join(' ')}
           type="date" ref={dateInput} onChange={(e) => { setDate(new Date(e.target.value)) }} />
       </div>
-      <PinButton blocks={blocks} cid={props.cid} chainId={chain?.id as number} symbol={chain?.nativeCurrency?.symbol} />
+      {
+        (blocks !== 0 && !isNaN(blocks)) && <PinButton blocks={blocks} cid={props.cid} chainId={chain?.id as number} symbol={chain?.nativeCurrency?.symbol} />
+      }
     </div>
   )
 }
 
-export function useHosqPin(cid: string, numberOfBlocks: number, providerId: number, chain: number) {
+export function useHosqPin (cid: string, numberOfBlocks: number, providerId: number, chain: number) {
   const fees = useHosqRead(chain, 'get_total_price_for_blocks', [numberOfBlocks, providerId])
   const write = useHosqWrite(chain, 'add_new_valid_block', [cid, numberOfBlocks, providerId],
     { value: (fees.data != null) ? fees.data[0].add(fees.data[1]).toString() : '0' })
@@ -115,11 +126,11 @@ export function useHosqPin(cid: string, numberOfBlocks: number, providerId: numb
   }
 }
 
-export function useHosqUpload(data: HosqUploadProps) {
+export function useHosqUpload (data: HosqUploadProps) {
   const [progress, setProgress] = useState(0)
   const [response, setResponse] = useState<any | undefined>()
   const [error, setError] = useState<any | undefined>()
-  let url: string | undefined; //= "localhost:11666"
+  let url: string | undefined //= "localhost:11666"
   if (isProviderSelected()) {
     url = selectedProvider.api_url.endsWith('/')
       ? selectedProvider.api_url.substring(0, selectedProvider.api_url.length - 1)
@@ -127,8 +138,8 @@ export function useHosqUpload(data: HosqUploadProps) {
   }
   const upload = useCallback((cancelToken: CancelToken) => {
     const body = new FormData()
-    data.files !== undefined && data.files?.map((f, i) => body.append(`file`, f, `${f.webkitRelativePath || f.name}`))
-    data.blobs !== undefined && data.blobs?.map((b, i) => body.append(`blob`, b.blob, b.name))
+    data.files?.map((f, _i) => body.append('file', f, `${f.webkitRelativePath || f.name}`))
+    data.blobs?.map((b, _i) => body.append('blob', b.blob, b.name))
 
     setResponse(undefined)
     setError(undefined)
@@ -167,20 +178,20 @@ export function useHosqUpload(data: HosqUploadProps) {
   return { response, error, progress, upload }
 }
 
-export function HosqUploadFiles(props: HosqUploadFilesProps) {
+export function HosqUploadFiles (props: HosqUploadFilesProps) {
   const [files, setFiles] = useState<File[]>([])
   const { response, progress, error, upload } = useHosqUpload({ files, wrapInDir: props.wrapInDir })
   const fileSpan: any = useRef()
-  const isMobile = useMediaQuery({ maxWidth: 767 });
+  const isMobile = useMediaQuery({ maxWidth: 767 })
   useEffect(() => {
     if (files.length === 0) return
     let [name, size] = ['', 0]
-    if (files.length === 1) { name = files[0].name, size = files[0].size } else {
+    if (files.length === 1) { name = files[0].name; size = files[0].size } else {
       name = `${files.length} files`
       files.forEach((f) => size += f.size)
     }
     fileSpan.current.innerHTML = `${name}  <span class="as-text-bold">${(size / 1e6).toFixed(2)} MiB</span>`
-      ; (props.onDrop != null) && props.onDrop(files)
+    props.onDrop?.(files)
     const token = axios.CancelToken
     const source = token.source()
     if (props.uploadOnDrop) {
@@ -220,11 +231,11 @@ export function HosqUploadFiles(props: HosqUploadFilesProps) {
   )
 }
 
-export function isProviderSelected() {
+export function isProviderSelected (): boolean {
   return selectedProvider !== undefined
 }
 
-export function useGet(cid: string, json: boolean = false) {
+export function useGet (cid: string, json: boolean = false) {
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<any | undefined>()
   const [error, setError] = useState<any | undefined>()
@@ -252,17 +263,17 @@ export function useGet(cid: string, json: boolean = false) {
   return { data, error, isLoading }
 }
 
-export function getGateway() {
+export function getGateway () {
   if (!isProviderSelected()) return ''
   return `${selectedProvider.api_url}/ipfs`
 }
 
-export function HosqPicker(props: HosqProviderProps) {
-  const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1);
+export function HosqPicker (props: HosqPickerProps) {
+  const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1)
   const { chain } = useNetwork()
   const { data, isError, isLoading } = useHosqRead(chain?.id as number, 'get_provider_details', [pID])
   // const [ready, setReady] = useState(false)
-  const hosqIdInput = useRef<HTMLInputElement>();
+  const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
   useEffect(() => {
     // console.log("rr", data, error, isError, isLoading);
     // isError && toast.error('Failed to get Hosq provider')
@@ -276,10 +287,9 @@ export function HosqPicker(props: HosqProviderProps) {
   }, [data])
 
   return (
-    props.hide ?
-      <></>
-      :
-      <div className={`${hosqStyles.picker} ${isLoading && 'as-loading'}`}>
+    props.hide
+      ? <></>
+      : <div className={`${hosqStyles.picker} ${isLoading && 'as-loading'}`}>
         {/* <span>Hosq Provider Picker</span> */}
         <div>
           <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} className={`${isError && 'as-bg-danger'}`} />
@@ -287,7 +297,7 @@ export function HosqPicker(props: HosqProviderProps) {
         </div>
         <span>{data?.name}</span>
         <span>{data?.api_url}</span>
-        <span>{ethers.utils.formatEther(data?.block_price.toString() || "0")} {chain?.nativeCurrency?.symbol}</span>
+        <span>{ethers.utils.formatEther(data?.block_price.toString() || '0')} {chain?.nativeCurrency?.symbol}</span>
       </div>
   )
 }

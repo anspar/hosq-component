@@ -1,27 +1,27 @@
-import React from 'react';
+import React from 'react'
 
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react'
 
-import { HosqUploadFiles, HosqPicker } from './Hosq';
+import { HosqUploadFiles, HosqPicker } from './Hosq'
 
-import { ThemeSwitch } from '@anspar/anspar-theme';
+import { ThemeSwitch } from '@anspar/anspar-theme'
 
-import { WalletContext, Wallet } from '@anspar/rainbowkit-anspar';
+import { WalletContext, Wallet } from '@anspar/rainbowkit-anspar'
 
 export default {
   title: 'WalletContext/Hosq',
-  component: HosqUploadFiles,
-} as ComponentMeta<typeof HosqUploadFiles>;
+  component: HosqUploadFiles
+} as ComponentMeta<typeof HosqUploadFiles>
 
 const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
   return (
     <>
-      <ThemeSwitch style={{ width: "30px" }} />
+      <ThemeSwitch style={{ width: '30px' }} />
       <WalletContext testnets>
         <Wallet />
         <br />
         <HosqPicker />
-        <div style={{ marginTop: "0.5rem", backgroundColor: "var(--as-light)", padding: "1rem" }}>
+        <div style={{ marginTop: '0.5rem', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
             <HosqUploadFiles {...args} />
         </div>
       </WalletContext>
@@ -29,20 +29,18 @@ const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
   )
 }
 
-
-export const UploadFiles = Template.bind({});
-export const UploadFilesAcceptOnlyImages = Template.bind({});
+export const UploadFiles = Template.bind({})
+export const UploadFilesAcceptOnlyImages = Template.bind({})
 UploadFilesAcceptOnlyImages.args = {
   accept: {
-    "image/*": []
+    'image/*': []
   }
 }
-
 
 const Template2: ComponentStory<typeof HosqPicker> = (args) => {
   return (
     <>
-      <ThemeSwitch style={{ width: "30px" }} />
+      <ThemeSwitch style={{ width: '30px' }} />
       <WalletContext testnets customTestChains={[{
         id: 1337,
         name: 'Anspar',
@@ -50,7 +48,7 @@ const Template2: ComponentStory<typeof HosqPicker> = (args) => {
         nativeCurrency: {
           decimals: 18,
           name: 'Anspar',
-          symbol: 'AT',
+          symbol: 'AT'
         },
         rpcUrls: {
           default: 'http://server:8545'
@@ -64,13 +62,12 @@ const Template2: ComponentStory<typeof HosqPicker> = (args) => {
     </>
   )
 }
-export const HosqProviderPicker = Template2.bind({});
-
+export const HosqProviderPicker = Template2.bind({})
 
 const Template3: ComponentStory<typeof HosqUploadFiles> = (args) => {
   return (
     <>
-      <ThemeSwitch style={{ width: "30px" }} />
+      <ThemeSwitch style={{ width: '30px' }} />
       <WalletContext testnets customTestChains={[{
         id: 1337,
         name: 'Anspar',
@@ -78,7 +75,7 @@ const Template3: ComponentStory<typeof HosqUploadFiles> = (args) => {
         nativeCurrency: {
           decimals: 18,
           name: 'Anspar',
-          symbol: 'AT',
+          symbol: 'AT'
         },
         rpcUrls: {
           default: 'http://server:8545'
@@ -86,7 +83,7 @@ const Template3: ComponentStory<typeof HosqUploadFiles> = (args) => {
       }]
       }>
         <Wallet />
-        <div style={{ margin: "0.5rem 0", backgroundColor: "var(--as-light)", padding: "1rem" }}>
+        <div style={{ margin: '0.5rem 0', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
             <HosqUploadFiles {...args} />
         </div>
         <HosqPicker />
@@ -94,4 +91,4 @@ const Template3: ComponentStory<typeof HosqUploadFiles> = (args) => {
     </>
   )
 }
-export const UploadFilesCustomChain = Template3.bind({});
+export const UploadFilesCustomChain = Template3.bind({})

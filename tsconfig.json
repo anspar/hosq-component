@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "es5",
+    "target": "ESNext",
     "outDir": "dist",
     "skipLibCheck": true,
     "strict": true,
