@@ -265,7 +265,7 @@ export function getGateway () {
   return `${selectedProvider.api_url}/ipfs`
 }
 
-function ProviderDetails (props: { pID: number }) {
+function ProviderDetails (props: { pID: number, hide?: boolean }) {
   const { chain } = useNetwork()
   const { data, isError, isLoading } = useHosqRead(chain?.id as number, 'get_provider_details', [props.pID])
   useEffect(() => {
@@ -273,7 +273,9 @@ function ProviderDetails (props: { pID: number }) {
       selectedProvider = data
       selectedProviderId = props.pID // add user select option
     }
-  }, [data])
+  }, [data, props.hide])
+
+  if (props.hide) return (<></>)
   return (
     <div className={`${isLoading && 'as-loading'} ${isError && 'as-bg-danger'} ${hosqStyles.providerDetails}`}>
       {
@@ -295,15 +297,13 @@ export function HosqPicker (props: HosqPickerProps) {
   const { isConnected } = useAccount()
 
   return (
-    props.hide
-      ? <></>
-      : <div className={`${hosqStyles.picker}`}>
+      <div className={`${hosqStyles.picker}`}>
         {/* <span>Hosq Provider Picker</span> */}
         <div>
           <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} />
           <span className='as-btn-primary as-btn' onClick={() => { setPID(hosqIdInput.current?.valueAsNumber) }}>Select</span>
         </div>
-        {isConnected && <ProviderDetails pID={pID}/>}
+        {isConnected && <ProviderDetails pID={pID} hide={props.hide}/>}
       </div>
   )
 }
