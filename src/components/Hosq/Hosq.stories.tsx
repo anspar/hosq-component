@@ -37,7 +37,6 @@ UploadFilesAcceptOnlyImages.args = {
   }
 }
 
-
 const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
   return (
     <>

@@ -64,7 +64,7 @@
     max-width: 240px;
 }
 
-.picker>div{
+.picker>div:nth-of-type(1){
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -84,4 +84,11 @@
 
 .picker>div>input::placeholder {
     color: white;
+}
+
+.providerDetails{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 }

@@ -6,8 +6,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import React, { DetailedHTMLProps, InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react'
 import Dropzone from 'react-dropzone'
-// import { toast } from 'react-toastify'
-import { useNetwork } from 'wagmi'
+import { useNetwork, useAccount } from 'wagmi'
 import { CircularProgress, CircularProgressLabel } from '@chakra-ui/progress'
 import axios, { CancelToken } from 'axios'
 import { ethers } from 'ethers'
@@ -16,8 +15,6 @@ import { useHosqRead, useHosqWrite } from '../utils/hooks'
 import hosqStyles from './Hosq.modules.css'
 import blockTimes from '../utils/blockTimes'
 import { useMediaQuery } from 'react-responsive'
-
-// const blockTimes = require("../utils/blockTimes.json");
 
 export interface HosqPickerProps {
   DefaultProviderId?: number
@@ -268,30 +265,45 @@ export function getGateway () {
   return `${selectedProvider.api_url}/ipfs`
 }
 
-export function HosqPicker (props: HosqPickerProps) {
-  const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
-  const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1)
+function ProviderDetails (props: { pID: number }) {
   const { chain } = useNetwork()
-  const { data, isError, isLoading } = useHosqRead(chain?.id as number, 'get_provider_details', [pID])
+  const { data, isError, isLoading } = useHosqRead(chain?.id as number, 'get_provider_details', [props.pID])
   useEffect(() => {
     if (data != null) {
       selectedProvider = data
-      selectedProviderId = pID // add user select option
+      selectedProviderId = props.pID // add user select option
     }
   }, [data])
+  return (
+    <div className={`${isLoading && 'as-loading'} ${isError && 'as-bg-danger'} ${hosqStyles.providerDetails}`}>
+      {
+        (data && data?.api_url !== '')
+          ? <>
+          <span>{data?.name}</span>
+          <span>{data?.api_url}</span>
+          <span>{ethers.utils.formatEther(data?.block_price.toString() || '0')} {chain?.nativeCurrency?.symbol}</span>
+        </>
+          : <span>Provider is not Found</span>
+      }
+    </div>
+  )
+}
+
+export function HosqPicker (props: HosqPickerProps) {
+  const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
+  const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1)
+  const { isConnected } = useAccount()
 
   return (
     props.hide
       ? <></>
-      : <div className={`${hosqStyles.picker} ${isLoading && 'as-loading'}`}>
+      : <div className={`${hosqStyles.picker}`}>
         {/* <span>Hosq Provider Picker</span> */}
         <div>
-          <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} className={`${isError && 'as-bg-danger'}`} />
+          <input type="number" placeholder='Hosq ID' min={1} ref={hosqIdInput} />
           <span className='as-btn-primary as-btn' onClick={() => { setPID(hosqIdInput.current?.valueAsNumber) }}>Select</span>
         </div>
-        <span>{data?.name}</span>
-        <span>{data?.api_url}</span>
-        <span>{ethers.utils.formatEther(data?.block_price.toString() || '0')} {chain?.nativeCurrency?.symbol}</span>
+        {isConnected && <ProviderDetails pID={pID}/>}
       </div>
   )
 }
