@@ -20,7 +20,7 @@ const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
       <WalletContext testnets>
         <Wallet />
         <br />
-        <HosqPicker />
+        <HosqPicker DefaultProviderId={1} />
         <div style={{ marginTop: '0.5rem', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
             <HosqUploadFiles {...args} />
         </div>
