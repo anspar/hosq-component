@@ -33,7 +33,7 @@ const Template: ComponentStory<typeof HosqPicker> = (args) => {
       }>
         <Wallet />
         <br />
-        <HosqPicker />
+        <HosqPicker {...args}/>
       </WalletContext>
     </>
   )

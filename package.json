@@ -67,7 +67,7 @@
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
-    "@anspar/rainbowkit-anspar": "^0.1.7",
+    "@anspar/rainbowkit-anspar": "^0.1.8",
     "@chakra-ui/progress": "2.0.0-next.2",
     "axios": "^0.27.2",
     "ethers": "^5.7.2",
