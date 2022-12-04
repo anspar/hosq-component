@@ -269,21 +269,15 @@ export function getGateway () {
 }
 
 export function HosqPicker (props: HosqPickerProps) {
+  const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
   const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1)
   const { chain } = useNetwork()
   const { data, isError, isLoading } = useHosqRead(chain?.id as number, 'get_provider_details', [pID])
-  // const [ready, setReady] = useState(false)
-  const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
   useEffect(() => {
-    // console.log("rr", data, error, isError, isLoading);
-    // isError && toast.error('Failed to get Hosq provider')
     if (data != null) {
       selectedProvider = data
       selectedProviderId = pID // add user select option
-      // setReady(true)
-      // return
     }
-    // setReady(false)
   }, [data])
 
   return (
