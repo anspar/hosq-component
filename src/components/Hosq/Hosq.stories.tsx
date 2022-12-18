@@ -51,7 +51,9 @@ const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
           symbol: 'AT'
         },
         rpcUrls: {
-          default: 'http://server:8545'
+          default: {
+            http: ['http://server:8545']
+          } 
         }
       }]
       }>

@@ -8,12 +8,14 @@ import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
 import image from 'rollup-plugin-img'
 
+const packageJson = require('./package.json')
+
 export default [
   {
     input: 'src/index.ts',
     output: [
       {
-        file: 'dist/index.mjs',
+        file: packageJson.main,
         format: 'esm',
         sourcemap: true
       }
@@ -23,7 +25,7 @@ export default [
       peerDepsExternal(),
       nodeResolve(),
       commonjs(),
-      typescript({ tsconfig: './tsconfig.json' }),
+      typescript({ tsconfig: './tsconfig.json', exclude: ['**/*.stories.tsx', '**/*.test.tsx'] }),
       json(),
       postcss({
         minimize: true,
@@ -35,8 +37,8 @@ export default [
         extensions: /\.(png|jpg|jpeg|gif|svg)$/, // support png|jpg|jpeg|gif|svg, and it's alse the default value
         limit: 8192, // default 8192(8k)
         exclude: 'node_modules/**'
-      }),
-      terser()
+      })
+      // terser()
     ]
   }
 ]

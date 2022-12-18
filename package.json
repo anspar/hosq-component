@@ -67,15 +67,15 @@
     "typescript": "^4.9.3"
   },
   "peerDependencies": {
-    "@anspar/rainbowkit-anspar": "^0.1.8",
+    "@anspar/rainbowkit-anspar":"^0.1.11",
     "@chakra-ui/progress": "2.0.0-next.2",
     "axios": "^0.27.2",
-    "ethers": "^5.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-responsive": "^9.0.0-beta.10"
   },
+  "main": "dist/index.mjs",
   "files": [
     "dist"
   ],

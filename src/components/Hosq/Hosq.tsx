@@ -295,7 +295,7 @@ export function HosqPicker (props: HosqPickerProps) {
   const hosqIdInput = useRef<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>>()
   const [pID, setPID] = useState(props.DefaultProviderId ? props.DefaultProviderId : 1)
   const { isConnected } = useAccount()
-
+  
   return (
       <div className={`${hosqStyles.picker}`}>
         {/* <span>Hosq Provider Picker</span> */}
