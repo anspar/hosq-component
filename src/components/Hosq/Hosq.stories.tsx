@@ -22,7 +22,7 @@ const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
         <br />
         <HosqPicker />
         <div style={{ marginTop: '0.5rem', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
-            <HosqUploadFiles {...args} />
+          <HosqUploadFiles {...args} />
         </div>
       </WalletContext>
     </>
@@ -53,13 +53,13 @@ const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
         rpcUrls: {
           default: {
             http: ['http://server:8545']
-          } 
+          }
         }
       }]
       }>
         <Wallet />
         <div style={{ margin: '0.5rem 0', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
-            <HosqUploadFiles {...args} />
+          <HosqUploadFiles {...args} />
         </div>
         <HosqPicker />
       </WalletContext>
