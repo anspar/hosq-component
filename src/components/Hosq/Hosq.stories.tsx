@@ -8,6 +8,7 @@ import { ThemeSwitch } from '@anspar/anspar-theme'
 
 import { WalletContext, Wallet } from '@anspar/rainbowkit-anspar'
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 export default {
   title: 'Hosq',
   component: HosqUploadFiles
@@ -15,17 +16,17 @@ export default {
 
 const Template: ComponentStory<typeof HosqUploadFiles> = (args) => {
   return (
-    <>
+    <div style={{ backgroundColor: 'var(--as-common)', padding: '1rem' }}>
       <ThemeSwitch style={{ width: '30px' }} />
       <WalletContext testnets>
         <Wallet />
         <br />
-        <HosqPicker />
-        <div style={{ marginTop: '0.5rem', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
+        <div style={{ marginBottom: '0.5rem' }}>
           <HosqUploadFiles {...args} />
         </div>
+        <HosqPicker />
       </WalletContext>
-    </>
+    </div>
   )
 }
 
@@ -39,7 +40,7 @@ UploadFilesAcceptOnlyImages.args = {
 
 const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
   return (
-    <>
+    <div style={{ backgroundColor: 'var(--as-common)', padding: '1rem' }}>
       <ThemeSwitch style={{ width: '30px' }} />
       <WalletContext testnets customTestChains={[{
         id: 1337,
@@ -58,12 +59,12 @@ const Template2: ComponentStory<typeof HosqUploadFiles> = (args) => {
       }]
       }>
         <Wallet />
-        <div style={{ margin: '0.5rem 0', backgroundColor: 'var(--as-light)', padding: '1rem' }}>
+        <div style={{ margin: '0.5rem 0' }}>
           <HosqUploadFiles {...args} />
         </div>
         <HosqPicker />
       </WalletContext>
-    </>
+    </div>
   )
 }
 export const UploadFilesCustomChain = Template2.bind({})

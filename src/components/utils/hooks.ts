@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-// import { CallOverrides } from 'ethers'
-import { useContractRead, useContractWrite } from 'wagmi'
+import { useContractRead, useContractWrite, usePrepareContractWrite } from 'wagmi'
 import hosq_abis from './abis/hosq_abis.json'
 
-const useHosqWrite = (chainId: number, functionName: string, args: any[], overrides?: { from?: string, value: string }) => {
+const useHosqWrite = (chainId: number, functionName: string, args: any[], overrides?: { value: any }) => {
   const nets: Record<string, string> = hosq_abis.hosq.networks
-  return useContractWrite({
-    mode: 'recklesslyUnprepared',
+  const { config } = usePrepareContractWrite({
     address: nets[`${chainId}`],
     abi: hosq_abis.hosq.abi,
     functionName,
@@ -14,6 +12,7 @@ const useHosqWrite = (chainId: number, functionName: string, args: any[], overri
     chainId,
     overrides
   })
+  return useContractWrite(config)
 }
 
 const useHosqRead = (chainId: number, functionName: string, args: any[]) => {

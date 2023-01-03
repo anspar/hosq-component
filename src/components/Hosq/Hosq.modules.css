@@ -4,10 +4,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: var(--as-primary-dim);
+    border-color: var(--as-highlight);
     border-radius: 1rem;
-    border-style: none;
+    border-style: solid;
     width: 100%;
+    padding: 5px;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 .div_space_between{
@@ -46,10 +49,10 @@
     padding: 20px;
     border-width: 2px;
     border-radius: 1rem;
-    border-color: var(--as-primary);
+    border-color: var(--as-highlight);
     border-style: dashed;
-    background-color: var(--as-light);
-    color: var(--as-dark);
+    background-color: var(--as-common);
+    color: var(--as-primary);
     outline: none;
     transition: border .24s ease-in-out;
     width: -webkit-fill-available;
@@ -73,17 +76,19 @@
 .picker>div>input{
     width: 100%;
     max-width: 160px;
-    background-color: var(--as-primary-dim);
-    color: var(--as-dark);
+    background-color: var(--as-secondary);
+    color: var(--as-common);
     padding: 0.5rem;
     border-radius: 0.3rem;
     border-style: none;
     text-align: center;
     outline-width: 0;
+    font-weight: bold;
 }
 
 .picker>div>input::placeholder {
-    color: white;
+    color: var(--as-common);
+    font-weight: bold;
 }
 
 .providerDetails{
